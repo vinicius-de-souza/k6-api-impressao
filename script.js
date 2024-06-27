@@ -12,6 +12,8 @@ export let options = {
   duration: "3m",
 };
 
+const SLOW_THRESHOLD = 15000; // Threshold in milliseconds to log slow requests
+
 export default function () {
   const numDataItems = data.length;
 
@@ -39,6 +41,13 @@ export default function () {
 
   let res = http.post(url, JSON.stringify(requestBody), params);
 
+  if (res.timings.duration > SLOW_THRESHOLD) {
+    console.log(
+      `Slow request: idExame - ${exame.idExame}, idLaudo - ${exame.idLaudo} took ${res.timings.duration}ms`
+    );
+    console.log(`Response: ${res.body}`);
+  }
+
   check(res, {
     "Response time menor de 5s": (r) => r.timings.duration < 4000,
     'Todas requests com "Sucesso" status': (r) => {
@@ -59,15 +68,13 @@ export default function () {
     },
   });
 
-  console.log(
-    `VU ${__VU} Request: idExame - ${exame.idExame} idLaudo: - ${exame.idLaudo}`
-  );
+  //console.log(`VU ${__VU} Request: idExame - ${exame.idExame} idLaudo: - ${exame.idLaudo}`);
 
   sleep(1);
 }
 
 export function handleSummary(data) {
   return {
-    "summary.html": htmlReport(data),
+    "report.html": htmlReport(data),
   };
 }
