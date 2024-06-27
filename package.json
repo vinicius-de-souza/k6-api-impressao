@@ -1,0 +1,12 @@
+{
+  "name": "k6-api-impressao",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "k6": "k6 run script.js"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC"
+}
